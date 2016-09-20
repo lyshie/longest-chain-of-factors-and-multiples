@@ -13,4 +13,4 @@ https://nrich.maths.org/5468
 * [Hamilton Path](https://en.wikipedia.org/wiki/Hamiltonian_path)
 * [Factors and Multiples - Hamiltonian Path](http://mathforum.org/library/drmath/view/54255.html)
 * my handwriting
-  [handwriting](images/my_guess.png)
+  [handwriting](images/my_guess.jpg)
