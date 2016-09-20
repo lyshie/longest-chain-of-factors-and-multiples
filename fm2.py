@@ -15,6 +15,7 @@ Description: Brute-force method to find the longest chain of
 
 from __future__ import print_function
 import sys
+from pprint import pprint
 
 MAX = 100     # 1..100 numbers
 LONGEST = 0   # record the current length of longest chain
@@ -22,12 +23,15 @@ NODES = []    # numbers that have been chosen
 TABLES = []   # factors and multiples relational matrix
 PATH = []     # longest chain
 
+QUICK = []
+
 
 def init(t, n, p):
     '''
     two-dimensional matrix to represent factors and multiples relations
     '''
     global MAX
+    global QUICK
 
     # all to zero
     for i in xrange(0, MAX + 1):
@@ -43,6 +47,14 @@ def init(t, n, p):
             if i != j:
                 t[i][j] = t[j][i] = 1
 
+    QUICK.append([])
+    for i in xrange(1, MAX + 1):
+        a = []
+        for j in xrange(1, MAX + 1):
+            if t[i][j] == 1:
+                a.append(j)
+        QUICK.append(a)
+
 
 def mark_node(n, p, node):
     n[node] = 1
@@ -56,11 +68,12 @@ def unmark_node(n, p, node):
 
 def find_path(t, n, p, node):
     global LONGEST
+    global QUICK
 
     more = 0
-    for i in xrange(1, MAX + 1):
+    for i in QUICK[node][::-1]:
         # backward may get better results
-        j = MAX + 1 - i
+        j = i
         if n[j] == 0 and t[node][j] == 1:
             more = j
             mark_node(n, p, node)
@@ -70,7 +83,7 @@ def find_path(t, n, p, node):
     # no more path to go, just print
     if more == 0:
         t = len(PATH)
-        if t > LONGEST:
+        if t > 69 and t > LONGEST:
             LONGEST = t
             print(t)  # length
             print(p)  # chain
