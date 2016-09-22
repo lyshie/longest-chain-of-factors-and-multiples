@@ -33,6 +33,8 @@ def init(t, n, p):
     global MAX
     global QUICK
 
+    primes = [29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
+
     # all to zero
     for i in xrange(0, MAX + 1):
         n.append(0)
@@ -44,7 +46,7 @@ def init(t, n, p):
     # factors-and-multiples relation
     for i in xrange(1, MAX + 1):
         for j in xrange(i, MAX + 1, i):
-            if i != j:
+            if i != j and (i not in primes) and (j not in primes):
                 t[i][j] = t[j][i] = 1
 
     QUICK.append([])
@@ -66,19 +68,30 @@ def unmark_node(n, p, node):
     p.pop()
 
 
-def find_path(t, n, p, node):
+def find_path(t, n, p, node, back=True):
     global LONGEST
     global QUICK
 
     more = 0
-    for i in QUICK[node][::-1]:
-        # backward may get better results
-        j = i
-        if n[j] == 0 and t[node][j] == 1:
-            more = j
-            mark_node(n, p, node)
-            find_path(t, n, p, j)
-            unmark_node(n, p, node)
+
+    if back:
+        for i in QUICK[node][::-1]:
+            # backward may get better results
+            j = i
+            if n[j] == 0 and t[node][j] == 1:
+                more = j
+                mark_node(n, p, node)
+                find_path(t, n, p, j, ~back)
+                unmark_node(n, p, node)
+    else:
+        for i in QUICK[node]:
+            # backward may get better results
+            j = i
+            if n[j] == 0 and t[node][j] == 1:
+                more = j
+                mark_node(n, p, node)
+                find_path(t, n, p, j, ~back)
+                unmark_node(n, p, node)
 
     # no more path to go, just print
     if more == 0:
