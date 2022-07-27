@@ -40,7 +40,7 @@ def init(t, n, p):
     # factors-and-multiples relation
     for i in xrange(1, MAX + 1):
         for j in xrange(i, MAX + 1, i):
-            if i != j:
+            if i != j and i not in [1, 2, 3] and j not in [1, 2, 3]:
                 t[i][j] = t[j][i] = 1
 
 
